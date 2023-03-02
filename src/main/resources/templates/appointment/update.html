@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update appointment</title>
+</head>
+<body>
+
+<form  th:action="@{/appointments/{id}/{appointmentId}/update(id=${hospitalId}, appointmentId=${appointmentId})}" th:object="${appointment}" th:method="PUT">
+    <label for="date">Date: </label>
+    <input type="date" th:field="*{date}" id="date"/>
+    <!--    <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>-->
+    <input type="submit" value="Update!"/>
+</form>
+
+</body>
+</html>

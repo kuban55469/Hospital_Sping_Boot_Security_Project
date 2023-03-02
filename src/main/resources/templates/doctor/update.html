@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+<div class="wrapper-btn">
+  <a th:href="@{/doctors/{id}(id=${hospitalId})}">
+    <button class="btn btn-primary" type="button">back</button>
+  </a>
+</div>
+
+<form action="#"
+      th:action="@{/doctors/{hospitalId}/{id}/update(hospitalId=${hospitalId},id=${doctor.id})}"
+      th:object="${doctor}"
+      method="post">
+  <div class="container">
+    <hr>
+    <input type="hidden" name="id" th:field="*{id}">
+
+    <label for="psw4"><b>Doctor name</b></label>
+    <input type="text" placeholder="Enter doctor name" th:field="*{firsName}" name="email1" id="psw4" required>
+
+    <label for="psw"><b>Doctor last name</b></label>
+    <input type="text" placeholder="Enter doctor last name" th:field="*{lastName}" name="psw" id="psw" required>
+
+    <label for="email"><b>Doctor email</b></label>
+    <input type="email" placeholder="Enter email" th:field="*{email}" name="email" id="email" required>
+
+    <label for="psw3"><b>Doctor position</b></label>
+    <input type="text"  placeholder="Enter position" th:field="*{position}" name="psw2" id="psw3" required>
+    <hr>
+    <button type="submit" class="registerbtn">Update doctor</button>
+  </div>
+</form>
+
+</body>
+</html>

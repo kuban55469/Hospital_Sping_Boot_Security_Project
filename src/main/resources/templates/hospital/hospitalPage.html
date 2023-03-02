@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>All Companies</title>
+  <style>table,
+  td {
+    border: 1px solid #333333FF;
+    margin-top: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 25px;
+  }
+  tfoot {
+    background-color: #333333FF;
+    color: #FFFFFFFF;
+  }
+  </style>
+  <style>
+    table, th, td {
+      border: 1px solid black;
+      padding: 3px;
+    }
+  </style>
+</head>
+<body>
+
+
+
+
+<table class="styled-table">
+  <thead>
+  <tr>
+    <th scope="colgroup">Id</th>
+    <th scope="col">Hospital name</th>
+    <th scope="col">Address</th>
+    <th scope="col">Departments</th>
+    <th scope="col">Doctors</th>
+    <th scope="col">Patients</th>
+    <th scope="col">Appointments</th>
+    <th scope="col">Update</th>
+    <th scope="col">Delete</th>
+
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="hospital: ${hospitals}" class="active-row">
+    <td th:text="${hospital.getId()}"></td>
+    <td th:text="${hospital.getName()}"></td>
+    <td th:text="${hospital.getAddress()}"></td>
+
+
+
+    <td><a th:href="@{/departments/{id}(id=${hospital.id})}">
+      <button>Departments</button>
+    </a>
+    </td>
+    <td><a th:href="@{/doctors/{id}(id=${hospital.id})}">
+      <button>Doctors</button>
+    </a>
+    </td>
+    <td><a th:href="@{/patients/{id}(id=${hospital.id})}">
+      <button>Patients</button>
+    </a>
+    </td>
+    <td><a th:href="@{/appointments/{id}(id=${hospital.id})}">
+      <button>Appointments</button>
+    </a>
+    </td>
+
+
+
+    <td><a th:href="@{/hospitals/{hospitalId}/edit(hospitalId=${hospital.getId()})}">
+      <button>Update</button>
+    </a>
+    </td>
+
+    <td> <form th:method="GET" th:action="@{/hospitals/{hospitalId}/delete(hospitalId=${hospital.getId()})}">
+      <input type="submit" class="btn btn-outline-primary"  th:value="  Delete  "/>
+    </form>
+    </a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<br><br><br><br>
+<input style=" display: block; margin:auto; font-size:30px;" type="button" value="Add new Hospital"
+       onclick="window.location.href = '/hospitals/new'">
+
+
+</body>
+</html>
+
+

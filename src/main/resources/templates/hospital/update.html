@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+
+<form action="#" th:action="@{/hospitals/{id}/update(id=${hospital.getId()})}" th:object="${hospital}" method="post">
+    <div class="container">
+        <hr>
+        <input type="hidden" name="id" th:field="*{id}">
+        <label for="email"><b>Hospital name</b></label>
+        <input type="text" placeholder="Enter hospital name" th:field="*{name}" name="email" id="email" required>
+        <label for="psw"><b>Address</b></label>
+        <input type="text" placeholder="Enter address" th:field="*{address}" name="psw" id="psw" required>
+
+        <hr>
+        <button type="submit" class="registerbtn">Update hospital</button>
+    </div>
+</form>
+
+</body>
+</html>

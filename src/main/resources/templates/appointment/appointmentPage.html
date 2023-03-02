@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Companies</title>
+    <style>table,
+    td {
+        border: 1px solid #333333FF;
+        margin-top: 200px;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 25px;
+    }
+    tfoot {
+        background-color: #333333FF;
+        color: #FFFFFFFF;
+    }
+    </style>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            padding: 3px;
+        }
+    </style>
+</head>
+<body>
+<a th:href="@{/hospitals}">
+    <button class="btn btn-primary" type="button">back</button>
+</a>
+
+<table class="styled-table">
+    <thead>
+    <tr>
+        <th scope="colgroup">Id</th>
+        <th scope="col">Date</th>
+        <th scope="col">Patient name</th>
+        <th scope="col">Doctor name</th>
+        <th scope="col">Department name</th>
+        <th scope="col">Update</th>
+        <th scope="col">Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="appointment: ${appointments}" class="table">
+        <td th:text="${appointment.id}"></td>
+        <td th:text="${appointment.date}"></td>
+        <td th:text="${appointment.patient.firstName}"></td>
+        <td th:text="${appointment.doctor.firsName}"></td>
+        <td th:text="${appointment.department.name}"></td>
+
+
+        <td class="div">
+            <form th:method="GET"
+                  th:action="@{/appointments/edit/{appointmentId}(appointmentId=${appointment.getId()})}">
+                <input type="submit" th:value="Update"/>
+            </form>
+        </td>
+        <td>
+            <form th:method="DELETE"
+                  th:action="@{/appointments/{hospitalId}/{appointmentId}/delete(hospitalId=${hospitalId},appointmentId=${appointment.getId()})}">
+                <input type="submit" th:value="Delete"/>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<br><br><br><br>
+<div style="text-align: center">
+    <a th:href="@{/appointments/new/{id}(id=${hospitalId})}">
+        <button class="btn"> Add new Appointment </button>
+    </a>
+    <br><br><br><br>
+    <a th:href="@{/hospitals}">
+        <button style="margin-left: 10px"  class="btn"> Hospital page </button>
+    </a>
+</div>
+
+</body>
+</html>
