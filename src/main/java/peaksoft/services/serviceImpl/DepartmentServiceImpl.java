@@ -73,6 +73,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public void deleteDepartment(Long id, Long hospitalId) {
         Department department = departmentRepo.getById(id);
         List<Appointment> appointments = department.getHospital().getAppointments();
+        Hospital hospital = hospitalRepo.findById(hospitalId).get();
 
         if (appointments != null) {
             List<Appointment> appointmentList = appointments.stream().filter(s -> s.getDepartment().getId().equals(id)).toList();
@@ -84,6 +85,11 @@ public class DepartmentServiceImpl implements DepartmentService {
 
         List<Doctor> doctors = department.getDoctors();
         doctors.forEach(d->d.getDepartments().removeIf(s->s.getId().equals(id)));
+
+        if (appointments != null) {
+            hospital.getAppointments().removeAll(appointments);
+        }
+
 
         for (int i = 0; i < appointments.size(); i++) {
             appointmentRepo.deleteById(appointments.get(i).getId());

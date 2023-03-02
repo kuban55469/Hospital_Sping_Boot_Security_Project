@@ -41,13 +41,13 @@ public class HospitalApi {
 
 
 
-    @GetMapping("{hospitalId}/delete")
+    @GetMapping("/{hospitalId}/delete")
     public String deleteHospital(@PathVariable("hospitalId") Long hospitalId){
         hospitalService.deleteHospital(hospitalId);
         return "redirect:/hospitals";
     }
 
-    @GetMapping("{hospitalId}/edit")
+    @GetMapping("/{hospitalId}/edit")
     public String edit(@PathVariable("hospitalId") Long hospitalId, Model model){
         model.addAttribute("hospital", hospitalService.getHospitalById(hospitalId));
         return "hospital/update";
