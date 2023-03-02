@@ -4,8 +4,8 @@ package peaksoft.services.serviceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import peaksoft.models.Hospital;
-import peaksoft.models.Patient;
+import peaksoft.models.*;
+import peaksoft.repositories.AppointmentRepo;
 import peaksoft.repositories.HospitalRepo;
 import peaksoft.repositories.PatientRepo;
 import peaksoft.services.PatientService;
@@ -23,7 +23,7 @@ import java.util.List;
 public class PatientServiceImpl implements PatientService {
     private final PatientRepo patientRepo;
     private final HospitalRepo hospitalRepo;
-
+    private final AppointmentRepo appointmentRepo;
 
 
     @Override
@@ -38,7 +38,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public void update(Long patientId,Patient patient) {
+    public void update(Long patientId, Patient patient) {
         Patient patient1 = patientRepo.findById(patientId).get();
         patient1.setFirstName(patient.getFirstName());
         patient1.setLastName(patient.getLastName());
@@ -56,11 +56,23 @@ public class PatientServiceImpl implements PatientService {
     }
 
 
+
     @Override
     public void deletePatient(Long id) {
         Patient patient = patientRepo.findById(id).get();
-        patient.setAppointments(null);
-        patient.setHospital(null);
-        patientRepo.delete(patient);
+        Hospital hospital = patient.getHospital();
+        List<Appointment> appointments = patient.getAppointments();
+        appointments.forEach(a -> a.getPatient().setAppointments(null));
+        appointments.forEach(a -> a.getDoctor().setAppointments(null));
+        hospital.getAppointments().removeAll(appointments);
+
+        List<Patient> patients = patient.getHospital().getPatients();
+        patients.removeIf(p->p.getId().equals(id));
+
+        for (int i = 0; i < appointments.size(); i++) {
+            appointmentRepo.deleteById(appointments.get(i).getId());
+        }
+        patientRepo.deleteById(id);
+
     }
 }

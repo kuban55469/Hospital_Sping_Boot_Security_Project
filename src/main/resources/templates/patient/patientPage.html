@@ -58,7 +58,8 @@
         </a>
         </td>
 
-        <td><a th:href="@{/patients/{hospitalId}/{id}/delete(hospitalId=${hospitalId},id=${patient.id})}">
+
+        <td><a  th:method="GET" th:href="@{/patients/{hospitalId}/{id}/delete(hospitalId=${hospitalId},id=${patient.id})}">
             <button>Delete</button>
         </a>
         </td>

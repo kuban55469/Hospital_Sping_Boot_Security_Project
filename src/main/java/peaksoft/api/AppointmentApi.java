@@ -74,7 +74,7 @@ public class AppointmentApi {
 
 
 
-    @DeleteMapping("/{hospitalId}/{appointmentId}/delete")
+    @GetMapping("/{hospitalId}/{appointmentId}/delete")
     public String deleteDoctor(@PathVariable("appointmentId")Long appointmentId,
                                @PathVariable("hospitalId")Long hospitalId){
         appointmentService.deleteAppointment(hospitalId, appointmentId);

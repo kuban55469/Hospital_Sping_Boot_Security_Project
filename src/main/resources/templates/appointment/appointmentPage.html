@@ -56,7 +56,7 @@
             </form>
         </td>
         <td>
-            <form th:method="DELETE"
+            <form th:method="GET"
                   th:action="@{/appointments/{hospitalId}/{appointmentId}/delete(hospitalId=${hospitalId},appointmentId=${appointment.getId()})}">
                 <input type="submit" th:value="Delete"/>
             </form>

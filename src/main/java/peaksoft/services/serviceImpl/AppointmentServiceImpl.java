@@ -5,7 +5,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import peaksoft.models.Appointment;
+import peaksoft.models.Doctor;
 import peaksoft.models.Hospital;
+import peaksoft.models.Patient;
 import peaksoft.repositories.*;
 import peaksoft.services.AppointmentService;
 
@@ -59,21 +61,33 @@ public class AppointmentServiceImpl implements AppointmentService {
             newAppointment.setPatient(patientRepo.findById(appointment.getPatientId()).get());
             hospital.addAppointment(newAppointment);
             return appointmentRepo.save(newAppointment);
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void deleteAppointment(Long hospitalId, Long appointmentId) {
-        Appointment appointment = appointmentRepo.findById(appointmentId).get();
-        Hospital hospital = hospitalRepo.findById(hospitalId).get();
-        appointment.getDoctor().setAppointments(null);
-        appointment.getPatient().setAppointments(null);
+//        Appointment appointment = appointmentRepo.findById(appointmentId).get();
+//        Hospital hospital = hospitalRepo.findById(hospitalId).get();
+//        appointment.getDoctor().setAppointments(null);
+//        appointment.getPatient().setAppointments(null);
+//
+//        hospital.getAppointments().remove(appointment);
+//
+//        appointmentRepo.delete(appointment);
 
-        hospital.getAppointments().remove(appointment);
+        Appointment existAppointment = appointmentRepo.getById(appointmentId);
+        Hospital existHospital = existAppointment.getDoctor().getHospital();
+        existHospital.getAppointments().remove(existAppointment);
+        for (Doctor doctor : existHospital.getDoctors()) {
+            doctor.getAppointments().remove(existAppointment);
+        }
+        for (Patient patient : existHospital.getPatients()) {
+            patient.getAppointments().remove(existAppointment);
+        }
+        appointmentRepo.deleteById(appointmentId);
 
-        appointmentRepo.delete(appointment);
     }
 
 
