@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -20,16 +20,24 @@
         <input type="hidden" name="id" th:field="*{id}">
 
         <label for="psw4"><b>Doctor name</b></label>
-        <input type="text" placeholder="Enter doctor name" th:field="*{firsName}" name="email1" id="psw4" required>
+        <input type="text" placeholder="Enter doctor name" th:field="*{firsName}" name="email1" id="psw4">
+        <div style="color:red" th:if="${#fields.hasErrors('firsName')}" th:errors="*{firsName}">First name Error</div>
+
 
         <label for="psw"><b>Doctor last name</b></label>
-        <input type="text" placeholder="Enter doctor last name" th:field="*{lastName}" name="psw" id="psw" required>
+        <input type="text" placeholder="Enter doctor last name" th:field="*{lastName}" name="psw" id="psw">
+        <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last name Error</div>
+
 
         <label for="email"><b>Doctor email</b></label>
-        <input type="email" placeholder="Enter email" th:field="*{email}" name="email" id="email" required>
+        <input type="email" placeholder="Enter email" th:field="*{email}" name="email" id="email">
+        <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">First name Error</div>
+
 
         <label for="psw3"><b>Doctor position</b></label>
-        <input type="text"  placeholder="Enter position" th:field="*{position}" name="psw2" id="psw3" required>
+        <input type="text" placeholder="Enter position" th:field="*{position}" name="psw2" id="psw3">
+        <div style="color:red" th:if="${#fields.hasErrors('position')}" th:errors="*{position}"> Position Error</div>
+
         <hr>
         <button type="submit" class="registerbtn">Save doctor</button>
     </div>

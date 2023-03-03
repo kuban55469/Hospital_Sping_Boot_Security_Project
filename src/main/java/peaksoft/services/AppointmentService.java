@@ -17,7 +17,7 @@ public interface AppointmentService {
 
     Appointment findById(Long appointmentId);
 
-    void update(Long appointmentId,Appointment appointment);
+    void update(Long appointmentId, Appointment appointment);
 
     Appointment save(Long hospitalId, Appointment appointment);
 

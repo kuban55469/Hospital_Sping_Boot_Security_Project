@@ -85,13 +85,13 @@ public class DoctorServiceImpl implements DoctorService {
         hospital.getAppointments().removeAll(appointments);
 
         List<Doctor> doctors = doctor.getHospital().getDoctors();
-        doctors.removeIf(s->s.getId().equals(id));
+        doctors.removeIf(s -> s.getId().equals(id));
 
         List<Department> departments = doctor.getDepartments();
-        departments.forEach(d->d.getDoctors().removeIf(s->s.getId().equals(id)));
+        departments.forEach(d -> d.getDoctors().removeIf(s -> s.getId().equals(id)));
 
-        for (int i = 0; i < appointments.size(); i++) {
-            appointmentRepo.deleteById(appointments.get(i).getId());
+        for (Appointment appointment : appointments) {
+            appointmentRepo.deleteById(appointment.getId());
         }
         doctorRepo.deleteById(id);
     }

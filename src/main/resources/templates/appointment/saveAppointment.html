@@ -11,29 +11,32 @@
 <body class="body">
 
 <a th:href="@{/hospitals/profile/{hospitalId}(hospitalId=${hospitalId})}">
-    <button  >back</button>
+    <button>back</button>
 </a>
 
-<form th:action="@{/appointments/save/{hospitalId}(hospitalId=${hospitalId})}" th:object="${newAppointment}" method="POST">
+<form th:action="@{/appointments/save/{hospitalId}(hospitalId=${hospitalId})}" th:object="${newAppointment}"
+      method="POST">
     <input type="hidden" th:field="*{id}">
     <div>
         <label for="date">date</label>
         <input type="date" th:field="*{date}" id="date">
+        <div style="color:red" th:if="${#fields.hasErrors('date')}" th:errors="*{date}">Date Error</div>
+
     </div>
 
     <div>
-        <select th:field="*{departmentId}"  required>
+        <select th:field="*{departmentId}" required>
             <option value="">Select a department</option>
             <option th:each="department : ${departments}" th:value="${department.id}"
                     th:text="${department.name}"></option>
         </select>
 
-        <select th:field="*{patientId}"  required>
+        <select th:field="*{patientId}" required>
             <option value="">--Select a patient--</option>
             <option th:each="patient : ${patients}" th:value="${patient.id}"
                     th:text="${patient.lastName}"></option>
         </select>
-        <select th:field="*{doctorId}"  required>
+        <select th:field="*{doctorId}" required>
             <option value="">--Select a doctor--</option>
             <option th:each="doctor : ${doctors}" th:value="${doctor.id}"
                     th:text="${doctor.lastName}"></option>

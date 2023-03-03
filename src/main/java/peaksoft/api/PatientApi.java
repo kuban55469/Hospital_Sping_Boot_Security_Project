@@ -2,7 +2,7 @@ package peaksoft.api;
 
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,17 +17,11 @@ import peaksoft.services.PatientService;
  * @created 17.02.2023
  */
 @Controller
-
+@RequiredArgsConstructor
 @RequestMapping("/patients")
 public class PatientApi {
 
     private final PatientService patientService;
-
-    @Autowired
-    public PatientApi(PatientService patientService) {
-        this.patientService = patientService;
-    }
-
 
     @GetMapping("/{id}")
     public String getAllPatients(Model model, @PathVariable Long id) {
@@ -39,7 +33,7 @@ public class PatientApi {
 
     @GetMapping("/new/{id}")
     public String create(Model model,
-                         @PathVariable("id") Long id) {
+                         @PathVariable Long id) {
         model.addAttribute("newPatient", new Patient());
         model.addAttribute("hospitalId", id);
         model.addAttribute("male", Gender.MALE);
@@ -62,7 +56,7 @@ public class PatientApi {
 
 
     @GetMapping("/edit/{patientId}")
-    public String edit(@PathVariable("patientId") Long patientId,
+    public String edit(@PathVariable Long patientId,
                        Model model) {
         Patient patient = patientService.findById(patientId);
         model.addAttribute("patient", patient);
@@ -74,8 +68,8 @@ public class PatientApi {
 
     @PostMapping("/{hospitalId}/{patientId}/update")
     public String update(@ModelAttribute("patient") @Valid Patient patient, BindingResult bindingResult,
-                         @PathVariable("patientId") Long patientId,
-                         @PathVariable("hospitalId") Long hospitalId) {
+                         @PathVariable Long patientId,
+                         @PathVariable Long hospitalId) {
 
         if (bindingResult.hasErrors()) {
             return "/patient/update";
@@ -86,9 +80,9 @@ public class PatientApi {
 
 
     @GetMapping("/{hospitalId}/{patientId}/delete")
-    public String deletePatient(@PathVariable("patientId") Long id,
-                                @PathVariable("hospitalId") Long hospitalId) {
-        patientService.deletePatient(id);
+    public String deletePatient(@PathVariable Long patientId,
+                                @PathVariable Long hospitalId) {
+        patientService.deletePatient(patientId);
         return "redirect:/patients/" + hospitalId;
     }
 

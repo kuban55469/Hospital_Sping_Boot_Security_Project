@@ -17,11 +17,10 @@ public interface DepartmentService {
 
     Department findById(Long departmentId);
 
-    void update(Long departmentId,Department department);
+    void update(Long departmentId, Department department);
 
 
-    void deleteDepartment(Long id,Long hospitalId);
-
+    void deleteDepartment(Long id, Long hospitalId);
 
 
 }

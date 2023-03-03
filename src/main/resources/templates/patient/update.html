@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -11,21 +11,27 @@
     </a>
 </div>
 
-<form  action="#"
-       th:action="@{/patients/{hospitalId}/{id}/update(hospitalId=${hospitalId},id=${patient.id})}"
-       th:object="${patient}"
-       method="POST">
+<form action="#"
+      th:action="@{/patients/{hospitalId}/{id}/update(hospitalId=${hospitalId},id=${patient.id})}"
+      th:object="${patient}"
+      method="POST">
     <div class="container">
+
         <hr>
+
         <input type="hidden" name="id" th:field="*{id}">
+
         <label for="firstName"><b>First Name</b></label>
-        <input type="text" placeholder="Enter first name" th:field="*{firstName}" name="email" id="firstName" required>
+        <input type="text" placeholder="Enter first name" th:field="*{firstName}" name="email" id="firstName">
+        <div style="color:red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First name Error</div>
 
         <label for="lastName"><b>Last Name</b></label>
-        <input type="text" placeholder="Enter last name" th:field="*{lastName}" name="lastName" id="lastName" required>
+        <input type="text" placeholder="Enter last name" th:field="*{lastName}" name="lastName" id="lastName">
+        <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last name Error</div>
 
         <label for="email"><b>Email</b></label>
-        <input type="email" placeholder="Enter email" th:field="*{email}" name="email" id="email" required>
+        <input type="email" placeholder="Enter email" th:field="*{email}" name="email" id="email">
+        <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
 
         <label for="gender"><b>Gender</b>
             <select th:field="*{gender}" id="gender">
@@ -33,12 +39,15 @@
                 <option th:value="${female}">FEMALE</option>
             </select>
         </label>
-        <!--        <input type="text" placeholder="Enter gender" th:field="*{gender}" name="email" id="gender" required>-->
 
         <label for="phoneNumber"><b>Phone number </b></label>
-        <input type="text" placeholder="+996 XXX XXX XXX" th:field="*{phoneNumber}" name="phoneNum" id="phoneNumber" required>
+        <input type="text" placeholder="+996 XXX XXX XXX" th:field="*{phoneNumber}" name="phoneNum" id="phoneNumber">
+        <div style="color:red" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">Phone number
+            Error
+        </div>
 
         <hr>
+
         <button type="submit" class="registerbtn">Update patient</button>
     </div>
 </form>

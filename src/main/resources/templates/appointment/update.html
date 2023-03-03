@@ -6,10 +6,11 @@
 </head>
 <body>
 
-<form  th:action="@{/appointments/{id}/{appointmentId}/update(id=${hospitalId}, appointmentId=${appointmentId})}" th:object="${appointment}" th:method="PUT">
+<form th:action="@{/appointments/{id}/{appointmentId}/update(id=${hospitalId}, appointmentId=${appointmentId})}"
+      th:object="${appointment}" th:method="PUT">
     <label for="date">Date: </label>
     <input type="date" th:field="*{date}" id="date"/>
-    <!--    <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>-->
+    <div style="color:red" th:if="${#fields.hasErrors('date')}" th:errors="*{date}">Date Error</div>
     <input type="submit" value="Update!"/>
 </form>
 

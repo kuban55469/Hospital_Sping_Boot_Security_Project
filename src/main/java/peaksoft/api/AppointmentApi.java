@@ -1,8 +1,10 @@
 package peaksoft.api;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import peaksoft.models.Appointment;
 import peaksoft.services.AppointmentService;
@@ -26,16 +28,16 @@ public class AppointmentApi {
 
     @GetMapping("/{hospitalId}")
     public String getAllAppointments(Model model,
-                                     @PathVariable("hospitalId") Long hospitalId){
-        model.addAttribute("appointments",appointmentService.findAll(hospitalId));
+                                     @PathVariable Long hospitalId) {
+        model.addAttribute("appointments", appointmentService.findAll(hospitalId));
         return "appointment/appointmentPage";
     }
 
     @GetMapping("/new/{hospitalId}")
     public String addAppointment(@PathVariable Long hospitalId,
-                                 Model model){
+                                 Model model) {
         model.addAttribute("newAppointment", new Appointment());
-        model.addAttribute("patients",patientService.findAll(hospitalId));
+        model.addAttribute("patients", patientService.findAll(hospitalId));
         model.addAttribute("departments", departmentService.findAll(hospitalId));
         model.addAttribute("doctors", doctorService.getAllDoctors(hospitalId));
         model.addAttribute(hospitalId);
@@ -44,41 +46,44 @@ public class AppointmentApi {
 
 
     @PostMapping("/save/{hospitalId}")
-    public String save(@PathVariable("hospitalId") Long hospitalId,
-                       @ModelAttribute("newAppointment") Appointment appointment){
-        appointmentService.save(hospitalId,appointment);
+    public String save(@PathVariable Long hospitalId,
+                       @ModelAttribute("newAppointment") @Valid Appointment appointment,
+                       BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "appointment/saveAppointment";
+        }
+        appointmentService.save(hospitalId, appointment);
         return "redirect:/appointments/" + hospitalId;
     }
 
 
-
     @GetMapping("/edit/{appointmentId}")
-    public String edit(@PathVariable("appointmentId") Long appointmentId, Model model){
+    public String edit(@PathVariable Long appointmentId, Model model) {
         Appointment appointment = appointmentService.findById(appointmentId);
         model.addAttribute("appointment", appointmentService.findById(appointmentId));
         model.addAttribute("hospitalId", appointment.getDoctor().getHospital().getId());
         return "appointment/update";
     }
+
     @PutMapping("/{hospitalId}/{appointmentId}/update")
-    public String update(@ModelAttribute("appointment")Appointment appointment,
-                         @PathVariable("appointmentId")Long appointmentId,
-                         @PathVariable("hospitalId")Long hospitalId){
+    public String update(@ModelAttribute("appointment") @Valid Appointment appointment,
+                         BindingResult bindingResult,
+                         @PathVariable Long appointmentId,
+                         @PathVariable Long hospitalId) {
+        if (bindingResult.hasErrors()) {
+            return "appointment/update";
+        }
+
         appointmentService.update(appointmentId, appointment);
         return "redirect:/appointments/" + hospitalId;
     }
 
 
-
-
-
-
-
-
     @GetMapping("/{hospitalId}/{appointmentId}/delete")
-    public String deleteDoctor(@PathVariable("appointmentId")Long appointmentId,
-                               @PathVariable("hospitalId")Long hospitalId){
+    public String deleteDoctor(@PathVariable Long appointmentId,
+                               @PathVariable Long hospitalId) {
         appointmentService.deleteAppointment(hospitalId, appointmentId);
-        return"redirect:/appointments/" + hospitalId;
+        return "redirect:/appointments/" + hospitalId;
     }
 
 

@@ -20,6 +20,7 @@ import java.util.List;
 public class HospitalServiceImpl implements HospitalService {
 
     private final HospitalRepo hospitalRepo;
+
     @Override
     public List<Hospital> findAll() {
         return hospitalRepo.findAll();
@@ -36,7 +37,7 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
-    public void update( Hospital updateHospital) {
+    public void update(Hospital updateHospital) {
         hospitalRepo.save(updateHospital);
     }
 

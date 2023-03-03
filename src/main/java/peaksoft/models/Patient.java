@@ -3,6 +3,7 @@ package peaksoft.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,7 +39,8 @@ public class Patient {
     @NotEmpty(message = "Last name should not be empty.")
     @Size(min = 2, max = 30, message = "Last name must be between 2 and 30.")
     private String lastName;
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", unique = true)
+    @Pattern(regexp = "^\\+996\\d{9} $", message = "The phone number must be 13 digits long and start with +996 !!!")
     private String phoneNumber;
     private Gender gender;
     @NotEmpty(message = "Email should not be empty.")
@@ -47,9 +49,9 @@ public class Patient {
     private String email;
 
 
-    @ManyToOne(cascade = {DETACH,MERGE,PERSIST, REFRESH},fetch = EAGER)
+    @ManyToOne(cascade = {DETACH, MERGE, PERSIST, REFRESH}, fetch = EAGER)
     private Hospital hospital;
 
-    @OneToMany(mappedBy = "patient", cascade = {ALL},fetch = EAGER)
+    @OneToMany(mappedBy = "patient", cascade = {ALL}, fetch = EAGER)
     private List<Appointment> appointments = new ArrayList<>();
 }

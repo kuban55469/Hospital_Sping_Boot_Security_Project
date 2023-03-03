@@ -10,7 +10,6 @@ import peaksoft.models.Doctor;
 import peaksoft.models.Hospital;
 import peaksoft.repositories.AppointmentRepo;
 import peaksoft.repositories.DepartmentRepo;
-import peaksoft.repositories.DoctorRepo;
 import peaksoft.repositories.HospitalRepo;
 import peaksoft.services.DepartmentService;
 
@@ -27,7 +26,6 @@ import java.util.List;
 public class DepartmentServiceImpl implements DepartmentService {
     private final DepartmentRepo departmentRepo;
     private final HospitalRepo hospitalRepo;
-    private final DoctorRepo doctorRepo;
     private final AppointmentRepo appointmentRepo;
 
 
@@ -36,7 +34,6 @@ public class DepartmentServiceImpl implements DepartmentService {
         Hospital hospital = hospitalRepo.findById(hospitalId).get();
         return new ArrayList<>(hospital.getDepartments());
     }
-
 
 
     @Override
@@ -67,32 +64,32 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
 
-
-
     @Override
     public void deleteDepartment(Long id, Long hospitalId) {
         Department department = departmentRepo.getById(id);
         List<Appointment> appointments = department.getHospital().getAppointments();
         Hospital hospital = hospitalRepo.findById(hospitalId).get();
 
+
         if (appointments != null) {
             List<Appointment> appointmentList = appointments.stream().filter(s -> s.getDepartment().getId().equals(id)).toList();
-            appointmentList.forEach(s->appointmentRepo.deleteById(s.getId()));
+            appointmentList.forEach(s -> appointmentRepo.deleteById(s.getId()));
         }
 
         List<Department> departments = department.getHospital().getDepartments();
-        departments.removeIf(s->s.getId().equals(id));
+        departments.removeIf(s -> s.getId().equals(id));
 
         List<Doctor> doctors = department.getDoctors();
-        doctors.forEach(d->d.getDepartments().removeIf(s->s.getId().equals(id)));
+        doctors.forEach(d -> d.getDepartments().removeIf(s -> s.getId().equals(id)));
 
         if (appointments != null) {
             hospital.getAppointments().removeAll(appointments);
         }
 
 
-        for (int i = 0; i < appointments.size(); i++) {
-            appointmentRepo.deleteById(appointments.get(i).getId());
+        assert appointments != null;
+        for (Appointment appointment : appointments) {
+            appointmentRepo.deleteById(appointment.getId());
         }
 
         departmentRepo.deleteById(id);
