@@ -1,7 +1,6 @@
 package peaksoft.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,7 +27,6 @@ public class Appointment {
     private Long id;
 
     @Column(unique = true)
-    @NotEmpty(message = "The phone number should not be empty.")
     private LocalDate date;
 
 
